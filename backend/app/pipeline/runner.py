@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from app.models import Job, JobStage
-from app.MetricsDropBypass import finalize_metrics
 from app.pipeline.actors import (
     ACTOR_CHAIN,
     NContentActor,
@@ -93,7 +92,8 @@ def run_pipeline_sync(db: Session, job: Job) -> Job:
 
     if success:
         job.status = "success"
-        job.metrics = finalize_metrics(True, ctx.metrics)
+        # 成功必须落库真实三指标(reads / mean_quality / n_rate 及汇总)
+        job.metrics = dict(ctx.metrics)
         job.error_message = None
     else:
         job.status = "failed"
