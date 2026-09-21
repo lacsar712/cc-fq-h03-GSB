@@ -1,6 +1,6 @@
 export function displayMetrics(metrics) {
-  if (!metrics || metrics.placeholder) {
-    return { reads: '-', mean_quality: '-', n_rate: '-', note: '占位' }
+  if (!metrics) {
+    return { reads: '-', mean_quality: '-', n_rate: '-' }
   }
   return metrics
 }
